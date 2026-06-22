@@ -1,0 +1,23 @@
+# Environments
+.venv/
+env/
+venv/
+ENV/
+
+# Secrets & Configuration
+.env
+
+# Python caching
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local application logs and database caches
+guardrail_logs.json
+*.bak
+
+# IDEs & System files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
