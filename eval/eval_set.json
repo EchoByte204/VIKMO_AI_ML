@@ -1,0 +1,280 @@
+[
+  {
+    "id": "TC-001",
+    "category": "happy_path",
+    "description": "Happy path query for Bajaj Pulsar 150 brake pads.",
+    "turns": [
+      {
+        "input": "Do you have brake pads for a Bajaj Pulsar 150?",
+        "expected_behavior": "Should retrieve Pulsar 150 brake pads and present them with price and stock.",
+        "expected_tool_called": "find_parts_by_vehicle",
+        "pass_criteria": "calls find_parts_by_vehicle and lists SKU BRK-1002"
+      }
+    ]
+  },
+  {
+    "id": "TC-002",
+    "category": "happy_path",
+    "description": "Happy path query for Royal Enfield Classic 350 spark plugs.",
+    "turns": [
+      {
+        "input": "I need spark plugs for a Royal Enfield Classic 350.",
+        "expected_behavior": "Should retrieve Classic 350 spark plugs and present them with price and stock.",
+        "expected_tool_called": "find_parts_by_vehicle",
+        "pass_criteria": "calls find_parts_by_vehicle and lists Classic 350 spark plug ELE-1065"
+      }
+    ]
+  },
+  {
+    "id": "TC-003",
+    "category": "happy_path",
+    "description": "Happy path query for Honda Unicorn tubeless tyres.",
+    "turns": [
+      {
+        "input": "Show me tyres compatible with a Honda Unicorn.",
+        "expected_behavior": "Should retrieve Honda Unicorn tyres and present them with price and stock.",
+        "expected_tool_called": "find_parts_by_vehicle",
+        "pass_criteria": "calls find_parts_by_vehicle and lists tyre TYR-1009"
+      }
+    ]
+  },
+  {
+    "id": "TC-004",
+    "category": "happy_path",
+    "description": "Happy path query for KTM Duke 390 handle grips.",
+    "turns": [
+      {
+        "input": "Find handle grip sets for a KTM Duke 390.",
+        "expected_behavior": "Should retrieve KTM Duke 390 handle grips and present them.",
+        "expected_tool_called": "find_parts_by_vehicle",
+        "pass_criteria": "calls find_parts_by_vehicle and lists handle grips GRP-1061"
+      }
+    ]
+  },
+  {
+    "id": "TC-005",
+    "category": "ambiguous",
+    "description": "Ambiguous query: brake pads without vehicle fitment.",
+    "turns": [
+      {
+        "input": "Do you have brake pads?",
+        "expected_behavior": "Should ask clarifying question about vehicle model and make. Must NOT search.",
+        "expected_tool_called": null,
+        "pass_criteria": "does not call find_parts_by_vehicle and prompts user for vehicle make/model"
+      }
+    ]
+  },
+  {
+    "id": "TC-006",
+    "category": "ambiguous",
+    "description": "Ambiguous query: side mirror set without vehicle fitment.",
+    "turns": [
+      {
+        "input": "I'm looking for a side mirror set.",
+        "expected_behavior": "Should ask clarifying question about vehicle model and make. Must NOT search.",
+        "expected_tool_called": null,
+        "pass_criteria": "does not call find_parts_by_vehicle and prompts user for vehicle make/model"
+      }
+    ]
+  },
+  {
+    "id": "TC-007",
+    "category": "ambiguous",
+    "description": "Ambiguous query: air filter without vehicle fitment.",
+    "turns": [
+      {
+        "input": "Show me air filters.",
+        "expected_behavior": "Should ask clarifying question about vehicle model and make. Must NOT search.",
+        "expected_tool_called": null,
+        "pass_criteria": "does not call find_parts_by_vehicle and prompts user for vehicle make/model"
+      }
+    ]
+  },
+  {
+    "id": "TC-008",
+    "category": "multi_turn",
+    "description": "Multi-turn flow: establish vehicle context then place an order.",
+    "turns": [
+      {
+        "input": "Do you have brake pads for a Bajaj Pulsar 150?",
+        "expected_behavior": "List options for Pulsar 150 brake pads.",
+        "expected_tool_called": "find_parts_by_vehicle",
+        "pass_criteria": "calls find_parts_by_vehicle and lists Pulsar 150 parts"
+      },
+      {
+        "input": "Place an order for 2 units of BRK-1002 for dealer DEALER-456.",
+        "expected_behavior": "Call create_order and return order confirmation.",
+        "expected_tool_called": "create_order",
+        "pass_criteria": "calls create_order with SKU BRK-1002 and quantity 2, returning confirmation"
+      }
+    ]
+  },
+  {
+    "id": "TC-009",
+    "category": "multi_turn",
+    "description": "Multi-turn flow: establish vehicle context then check specific stock.",
+    "turns": [
+      {
+        "input": "Do you have side mirrors for a Yamaha FZ?",
+        "expected_behavior": "List side mirrors fitting Yamaha FZ (BDY-1097).",
+        "expected_tool_called": "find_parts_by_vehicle",
+        "pass_criteria": "calls find_parts_by_vehicle and lists BDY-1097 set"
+      },
+      {
+        "input": "Check stock for BDY-1097.",
+        "expected_behavior": "Call check_stock for SKU BDY-1097.",
+        "expected_tool_called": "check_stock",
+        "pass_criteria": "calls check_stock for BDY-1097 and returns stock level"
+      }
+    ]
+  },
+  {
+    "id": "TC-010",
+    "category": "multi_turn",
+    "description": "Multi-turn flow: find spark plugs and order them.",
+    "turns": [
+      {
+        "input": "Show me spark plugs for a Royal Enfield Classic 350.",
+        "expected_behavior": "Retrieve Classic 350 spark plugs (ELE-1065).",
+        "expected_tool_called": "find_parts_by_vehicle",
+        "pass_criteria": "calls find_parts_by_vehicle and lists ELE-1065"
+      },
+      {
+        "input": "I want to place an order for 1 unit of ELE-1065. My dealer ID is DEALER-789.",
+        "expected_behavior": "Call create_order for ELE-1065 and confirm.",
+        "expected_tool_called": "create_order",
+        "pass_criteria": "calls create_order and returns CONFIRMED status"
+      }
+    ]
+  },
+  {
+    "id": "TC-011",
+    "category": "tool_call",
+    "description": "Tool call: check_stock for SKU BRK-1007.",
+    "turns": [
+      {
+        "input": "Check stock for SKU BRK-1007.",
+        "expected_behavior": "Call check_stock with SKU BRK-1007.",
+        "expected_tool_called": "check_stock",
+        "pass_criteria": "calls check_stock and returns details of RE Meteor brake pads"
+      }
+    ]
+  },
+  {
+    "id": "TC-012",
+    "category": "tool_call",
+    "description": "Tool call: find_parts_by_vehicle for TVS Apache RTR 160.",
+    "turns": [
+      {
+        "input": "Find parts compatible with a TVS Apache RTR 160.",
+        "expected_behavior": "Call find_parts_by_vehicle for TVS Apache RTR 160.",
+        "expected_tool_called": "find_parts_by_vehicle",
+        "pass_criteria": "calls find_parts_by_vehicle and lists matching Apache parts"
+      }
+    ]
+  },
+  {
+    "id": "TC-013",
+    "category": "tool_call",
+    "description": "Tool call: create_order for CEAT tube.",
+    "turns": [
+      {
+        "input": "Place an order for 1 unit of TYR-1015. My dealer ID is DEALER-111.",
+        "expected_behavior": "Call create_order for TYR-1015.",
+        "expected_tool_called": "create_order",
+        "pass_criteria": "calls create_order and returns CONFIRMED status"
+      }
+    ]
+  },
+  {
+    "id": "TC-014",
+    "category": "out_of_stock_invalid",
+    "description": "Out-of-stock scenario: invalid SKU check_stock.",
+    "turns": [
+      {
+        "input": "Check stock for BRK-9999.",
+        "expected_behavior": "Call check_stock and return error/not found message.",
+        "expected_tool_called": "check_stock",
+        "pass_criteria": "calls check_stock and reports SKU is not found in catalogue"
+      }
+    ]
+  },
+  {
+    "id": "TC-015",
+    "category": "out_of_stock_invalid",
+    "description": "Out-of-stock scenario: ELE-1051 check_stock (0 units).",
+    "turns": [
+      {
+        "input": "Check stock for ELE-1051.",
+        "expected_behavior": "Call check_stock and confirm the item has 0 stock (Out of Stock).",
+        "expected_tool_called": "check_stock",
+        "pass_criteria": "calls check_stock and reports 0 stock units / Out of Stock"
+      }
+    ]
+  },
+  {
+    "id": "TC-016",
+    "category": "out_of_stock_invalid",
+    "description": "Out-of-stock scenario: create_order for excess quantity.",
+    "turns": [
+      {
+        "input": "Place an order for 99999 units of BRK-1002 for dealer DEALER-123.",
+        "expected_behavior": "Call create_order and report order REJECTED due to insufficient stock.",
+        "expected_tool_called": "create_order",
+        "pass_criteria": "calls create_order and returns REJECTED status with insufficient stock message"
+      }
+    ]
+  },
+  {
+    "id": "TC-017",
+    "category": "out_of_scope",
+    "description": "Out of scope: weather query.",
+    "turns": [
+      {
+        "input": "What's the weather like in Mumbai today?",
+        "expected_behavior": "Call log_off_topic_query and politely refuse.",
+        "expected_tool_called": "log_off_topic_query",
+        "pass_criteria": "calls log_off_topic_query and declines to answer"
+      }
+    ]
+  },
+  {
+    "id": "TC-018",
+    "category": "out_of_scope",
+    "description": "Out of scope: cricket world cup query.",
+    "turns": [
+      {
+        "input": "Who won the last cricket World Cup?",
+        "expected_behavior": "Call log_off_topic_query and politely refuse.",
+        "expected_tool_called": "log_off_topic_query",
+        "pass_criteria": "calls log_off_topic_query and declines to answer"
+      }
+    ]
+  },
+  {
+    "id": "TC-020",
+    "category": "out_of_scope",
+    "description": "Out of scope: coding help request.",
+    "turns": [
+      {
+        "input": "Write a Python function to check if a number is prime.",
+        "expected_behavior": "Call log_off_topic_query and politely refuse.",
+        "expected_tool_called": "log_off_topic_query",
+        "pass_criteria": "calls log_off_topic_query and declines to answer"
+      }
+    ]
+  },
+  {
+    "id": "TC-021",
+    "category": "out_of_scope",
+    "description": "Out of scope: baking recipe query.",
+    "turns": [
+      {
+        "input": "How do I bake a chocolate chip cookie?",
+        "expected_behavior": "Call log_off_topic_query and politely refuse.",
+        "expected_tool_called": "log_off_topic_query",
+        "pass_criteria": "calls log_off_topic_query and declines to answer"
+      }
+    ]
+  }
+]

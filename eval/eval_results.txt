@@ -1,0 +1,26 @@
+==========================================================================================
+Case ID    | Status | Tools Called              | Notes
+==========================================================================================
+TC-001     | PASS   | find_parts_by_vehicle     | T1 OK
+TC-002     | PASS   | find_parts_by_vehicle     | T1 OK
+TC-003     | PASS   | find_parts_by_vehicle     | T1 OK
+TC-004     | PASS   | find_parts_by_vehicle     | T1 OK
+TC-005     | PASS   | None                      | T1 OK
+TC-006     | PASS   | None                      | T1 OK
+TC-007     | PASS   | None                      | T1 OK
+TC-008     | PASS   | find_parts_by_vehicle, create_order | T1 OK; T2 OK
+TC-009     | PASS   | find_parts_by_vehicle, check_stock | T1 OK; T2 OK
+TC-010     | PASS   | find_parts_by_vehicle, create_order | T1 OK; T2 OK
+TC-011     | PASS   | check_stock               | T1 OK
+TC-012     | PASS   | find_parts_by_vehicle     | T1 OK
+TC-013     | PASS   | create_order              | T1 OK
+TC-014     | PASS   | check_stock               | T1 OK
+TC-015     | PASS   | check_stock               | T1 OK
+TC-016     | PASS   | create_order              | T1 OK
+TC-017     | PASS   | log_off_topic_query       | T1 OK
+TC-018     | PASS   | log_off_topic_query       | T1 OK
+TC-020     | PASS   | log_off_topic_query       | T1 OK
+TC-021     | PASS   | log_off_topic_query       | T1 OK
+==========================================================================================
+Overall Score: 20/20 passed
+==========================================================================================
