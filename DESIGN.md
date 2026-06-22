@@ -8,7 +8,7 @@ This document describes the design decisions, technical implementation details, 
 
 ### Embedding Model & Vector Database Choice
 - **Model**: We utilize `all-MiniLM-L6-v2` from SentenceTransformers. This 384-dimensional model strikes a perfect balance between retrieval latency, accuracy, and memory footprint.
-- **Index**: We use a **FAISS (Facebook AI Similarity Search) Flat L2 Index**. Given the dataset size of 600 catalogue items, a Flat index ensures 100% exact nearest-neighbor search accuracy without approximation overhead.
+- **Index**: We use a **FAISS IndexFlatIP (Inner Product) Index** with L2-normalized embeddings for cosine similarity. Given the dataset size of 600 catalogue items, a Flat index ensures 100% exact nearest-neighbor search accuracy without approximation overhead.
 - **Scaling Rationale**: Traditional prompt-stuffing (loading 600+ items directly into the prompt) is highly inefficient, costly, and hits context window limits or attention dilution. Our RAG system generates normalized embeddings on item text fields (combining `category`, `name`, and `description`) and searches them in a fraction of a millisecond.
 
 ### fitment and Semantic Filter Hybrid Logic
@@ -113,8 +113,7 @@ We incorporated a `promo_flag` regressor. Sales volume exhibits spikes during pe
 
 ### Validation Scheme (Leakage Prevention)
 To ensure validation represents a real-world scenario, we used a **Hold-out Test Window**:
-- **Train Period**: First 8 weeks of historical daily sales.
-- **Test Period**: The final 4 weeks of historical daily sales.
+- **Train Period**: Weeks 1–74 (2024-12-16 to 2026-05-11) | **Test Period**: Final 4 weeks (2026-05-12 to 2026-06-08) | Data is weekly, not daily — 78 weekly observations per SKU across 30 SKUs.
 - **No Leakage**: The model was fit strictly on train-period data. The future test period was completely hidden during training.
 
 ### Comparison Results (Overall MAE/MAPE)
@@ -123,8 +122,8 @@ Our model significantly outperforms traditional baselines:
 | Model | MAE | MAPE |
 | :--- | :--- | :--- |
 | **Prophet (with Regressor)** | **5.77** | **31.61%** |
-| Naive Baseline | 9.36 | 60.10% |
-| Seasonal Naive Baseline | 9.98 | 64.20% |
+| Naive Baseline | 9.36 | 38.38% |
+| Seasonal Naive Baseline | 9.98 | 65.08% |
 
 - **Prophet Improvement**: Reduces MAE by **38.3%** compared to the naive baseline.
 - **Justification**: Prophet's ability to model promotions and general weekly trends allows it to smooth out noise that naive baselines fail to handle.
